@@ -1,9 +1,34 @@
 #include "vec.h"
 
+struct LinkedList {
+    Node* head;
+    int size;
+    Node* tail; 
+};
+
 Node* ll_node(void* new_data) {
     Node* ret = (Node*) malloc(sizeof(Node));
     ret->data = new_data;
     ret->next = NULL;
+    return ret;
+}
+
+/// Get node at index. Not for outside use. For library use only.
+/// Usage:
+/// Node* node_at_index = ll_get(my_list, 1); // Returns the second node in the list if it exists
+/// Returns Node* to node struct rep. index i.
+Node* get_node(LinkedList* list, int index) {
+    if (index >= list->size || index < 0) {
+        return NULL;
+    }
+
+    Node* ret = list->head;
+    int i = 0;
+    while (ret != NULL && i < index) {
+        ret = ret->next;
+        i++;
+    }
+
     return ret;
 }
 
@@ -44,7 +69,20 @@ void ll_destroy(LinkedList* list) {
 /// 
 /// Returns void
 void ll_append(LinkedList* list, void* data_to_append) {
-    ll_insert_at(list, list->size, data_to_append);
+    if (list == NULL || data_to_append == NULL) {
+        fprintf(stderr, "list or data pointer is null\n");
+    }
+    // Handle case where list head is null (no elements)
+    if (list->head == NULL) {
+        list->head = ll_node(data_to_append);
+        list->tail = list->head;
+        list->size = 1;
+    } else {
+        Node* new_node = ll_node(data_to_append);
+        list->tail->next = new_node;
+        list->tail = new_node;
+        list->size++;
+    }
 }
 
 /// Inserts node after the node given and manages pointers properly. Assume node
@@ -143,28 +181,6 @@ void* ll_remove(LinkedList* list, int index) {
     return ret;
 }
 
-
-
-
-/// Get node at index. Not for outside use. For library use only.
-/// Usage:
-/// Node* node_at_index = ll_get(my_list, 1); // Returns the second node in the list if it exists
-/// Returns Node* to node struct rep. index i.
-Node* get_node(LinkedList* list, int index) {
-    if (index >= list->size || index < 0) {
-        return NULL;
-    }
-
-    Node* ret = list->head;
-    int i = 0;
-    while (ret != NULL && i < index) {
-        ret = ret->next;
-        i++;
-    }
-
-    return ret;
-}
-
 /// Check to see if list is empty
 /// Usage:
 /// if (ll_is_empty(my_list)) { foo(); }
@@ -175,4 +191,19 @@ int ll_is_empty(LinkedList* list) {
         fprintf(stderr, "list pointer null\n");
     }
     return (list->size == 0);
+}
+
+/// Returns iterator struct for easy enumeration of elements
+/// Usage:
+/// Iterator* my_iter = ll_iterator(my_list);
+Iterator* ll_iterator(LinkedList* list) {
+    Iterator* ret_iter = iterator(list->head);
+    return ret_iter;
+}
+
+/// Returns size of linked list in number of nodes
+/// Usage:
+/// int length = ll_size(my_list);
+int ll_size(LinkedList* list) {
+    return list->size;
 }

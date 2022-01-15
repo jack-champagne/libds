@@ -4,10 +4,9 @@
 #include <stdlib.h>
 #include "node.h"
 
-typedef struct Iterator {
-    Node* current;
-} Iterator;
+typedef struct Iterator Iterator;
 
+Iterator* iterator(Node* init_node);
 void* iter_next(Iterator* iterator);
 void iter_destroy(Iterator* iterator);
 

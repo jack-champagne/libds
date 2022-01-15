@@ -1,5 +1,21 @@
 #include "iterator.h"
 
+struct Iterator {
+    Node* current;
+};
+
+
+/// Sets the internal parameters of an Iterator struct
+/// so that it is initialized to the correct starting location.
+/// Usage:
+/// Iterator* ret_iter = (Iterator*) malloc(sizeof(Iterator));
+/// iterator(new_iter, list->head);
+Iterator* iterator(Node* init_node) {
+    Iterator* new_iter = (Iterator*) malloc(sizeof(Iterator));
+    new_iter->current = init_node;
+    return new_iter;
+}
+
 /// Retrieves next data pointer if it exists and
 /// returns NULL if next data does not exist or iterator is NULL itself
 /// Usage:
