@@ -2,6 +2,7 @@
 
 extern "C" {
 #include "vec.h"
+#include "queue.h"
 }
 
 #define MAX_LEN 1024
@@ -47,7 +48,7 @@ TEST(LLTests, SizeChanges) {
 }
 
 TEST(LLTests, AppendRuntime) {
-  int num = 10000000;
+  int num = 1000000;
   LinkedList* new_list = linked_list();
   for (int i = 0; i < num; i++) {
     ll_append(new_list, &i);
@@ -88,6 +89,34 @@ TEST(LLTests, PrependAppendOrdering) {
 
 }
 
+TEST(QueueTests, InitQueue) {
+  Queue* new_queue = queue();
+  EXPECT_EQ(q_size(new_queue), 0);
+  EXPECT_EQ(q_dequeue(new_queue),(void*) 0);
+}
+
+TEST(QueueTests, De_En_QueueSpeed_Size) {
+  Queue* new_queue = queue();
+  int i;
+  for (i = 0; i < 1000000; i++) {
+    q_enqueue(new_queue, &i);
+    EXPECT_EQ(q_size(new_queue), i + 1);
+  }
+}
+
+TEST(QueueTests, QueueIterator) {
+  Queue* new_queue = queue();
+  int i;
+  for (i = 0; i < 1000000; i++) {
+    q_enqueue(new_queue, &i);
+  }
+
+  Iterator* iter = q_iter(new_queue);
+  int* data;
+  while ((data = (int*) iter_next(iter)) != NULL) {
+    EXPECT_EQ(*data, 1000000);
+  }
+}
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
