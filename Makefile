@@ -7,7 +7,7 @@ TESTBIN = ds_test
 
 IDIR = include
 CC = gcc
-CFLAGS = -I$(IDIR) -Wall -Wextra -g -pthread
+CFLAGS = -I$(IDIR) -Wall -Wextra -g -pthread -fsanitize=address
 ODIR = obj
 SDIR = src
 LDIR = lib

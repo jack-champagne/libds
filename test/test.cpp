@@ -19,6 +19,7 @@ TEST(LLTests, InitAsserts) {
       << "Get at index 0 not returning null on empty list";
   EXPECT_EQ(ll_remove(new_list, 0), (void*) NULL) 
       << "Remove at index 0 not returning null element";
+  ll_destroy(new_list);
 }
 
 TEST(LLTests, SizeChanges) {
@@ -86,13 +87,20 @@ TEST(LLTests, PrependAppendOrdering) {
     EXPECT_EQ(my_strs[i], my_data);
     i++;
   }
+  iter_destroy(my_iter);
+  ll_destroy(new_list);
 
+  for (i = 0; i < 5; i++) {
+    free(my_strs[i]);
+  }
 }
 
 TEST(QueueTests, InitQueue) {
   Queue* new_queue = queue();
   EXPECT_EQ(q_size(new_queue), 0);
   EXPECT_EQ(q_dequeue(new_queue),(void*) 0);
+
+  q_destroy(new_queue);
 }
 
 TEST(QueueTests, De_En_QueueSpeed_Size) {
@@ -102,6 +110,8 @@ TEST(QueueTests, De_En_QueueSpeed_Size) {
     q_enqueue(new_queue, &i);
     EXPECT_EQ(q_size(new_queue), i + 1);
   }
+
+  q_destroy(new_queue);
 }
 
 TEST(QueueTests, QueueIterator) {
@@ -116,6 +126,8 @@ TEST(QueueTests, QueueIterator) {
   while ((data = (int*) iter_next(iter)) != NULL) {
     EXPECT_EQ(*data, 1000000);
   }
+  iter_destroy(iter);
+  q_destroy(new_queue);
 }
 
 int main(int argc, char **argv) {

@@ -53,3 +53,13 @@ int q_size(Queue* queue) {
 Iterator* q_iter(Queue* queue) {
     return ll_iterator(queue->queue_list);
 }
+
+/// Deallocs resources for queue
+/// It is the library users responsibility to dealloc
+/// the data
+/// Usage:
+/// q_destroy(my_queue);
+void q_destroy(Queue* queue) {
+    ll_destroy(queue->queue_list);
+    free(queue);
+}
