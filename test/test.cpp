@@ -8,6 +8,8 @@ extern "C" {
 
 #define MAX_LEN 1024
 
+#define O1BATCHSIZE 100000
+
 TEST(LLTests, InitAsserts) {
   LinkedList* new_list = linked_list();
   EXPECT_NE(new_list, (void*) NULL)
@@ -50,7 +52,7 @@ TEST(LLTests, SizeChanges) {
 }
 
 TEST(LLTests, AppendRuntime) {
-  int num = 1000000;
+  int num = O1BATCHSIZE;
   LinkedList* new_list = linked_list();
   for (int i = 0; i < num; i++) {
     ll_append(new_list, &i);
@@ -96,6 +98,42 @@ TEST(LLTests, PrependAppendOrdering) {
   }
 }
 
+TEST(LLTests, AppendTime_VS) {
+  LinkedList* new_list = linked_list();
+  int* mints[O1BATCHSIZE];
+  for (int i = 0; i < O1BATCHSIZE; i++) {
+    mints[i] = (int*) malloc(sizeof(int));
+    *mints[i] = i;
+  }
+
+  for (int i = 0; i < O1BATCHSIZE; i++) {
+    ll_append(new_list, mints[i]);
+  }
+
+  for (int i = 0; i < O1BATCHSIZE; i++) {
+    free(mints[i]);
+  }
+  ll_destroy(new_list);
+}
+
+TEST(LLTests, PrependTime_VS) {
+  LinkedList* new_list = linked_list();
+  int* mints[O1BATCHSIZE];
+  for (int i = 0; i < O1BATCHSIZE; i++) {
+    mints[i] = (int*) malloc(sizeof(int));
+    *mints[i] = i;
+  }
+
+  for (int i = 0; i < O1BATCHSIZE; i++) {
+    ll_prepend(new_list, mints[i]);
+  }
+
+  for (int i = 0; i < O1BATCHSIZE; i++) {
+    free(mints[i]);
+  }
+  ll_destroy(new_list);
+}
+
 TEST(QueueTests, InitQueue) {
   Queue* new_queue = queue();
   EXPECT_EQ(q_size(new_queue), 0);
@@ -118,31 +156,53 @@ TEST(QueueTests, De_En_QueueSpeed_Size) {
 TEST(QueueTests, QueueIterator) {
   Queue* new_queue = queue();
   int i;
-  for (i = 0; i < 1000000; i++) {
+  for (i = 0; i < O1BATCHSIZE; i++) {
     q_enqueue(new_queue, &i);
   }
 
-  Iterator* iter = q_iter(new_queue);
+  Iterator* iter = q_iterator(new_queue);
   int* data;
   while ((data = (int*) iter_next(iter)) != NULL) {
-    EXPECT_EQ(*data, 1000000);
+    EXPECT_EQ(*data, O1BATCHSIZE);
   }
   iter_destroy(iter);
   q_destroy(new_queue);
 }
 
 TEST(StackTests, InitStack) {
-  
+  Stack* new_stack = stack();
+  EXPECT_EQ(stk_pop(new_stack), (void*) NULL);
+  EXPECT_EQ(stk_size(new_stack), 0);
+  Iterator* new_iter = stk_iterator(new_stack);
+  EXPECT_EQ(iter_next(new_iter), (void*) NULL);
+  iter_destroy(new_iter);
+  stk_destroy(new_stack);
 }
 
 TEST(StackTests, Push_Pop_Speed) {
   Stack* new_stack = stack();
+  int* mints[O1BATCHSIZE];
   int i;
-  for (i = 0; i < 1000000; i++) {
-    stk_push(new_stack, &i);
+  for (i = 0; i < O1BATCHSIZE; i++) {
+    mints[i] = (int*) malloc(sizeof(int));
+    *mints[i] = i;
+    stk_push(new_stack, mints[i]);
+  }
+
+  int* data;
+  i = 0;
+  for (i = O1BATCHSIZE - 1; i >= 0; i--) {
+    data = (int*) stk_pop(new_stack);
+    EXPECT_EQ(*data, *mints[i]);
   }
 
   Iterator* iter = stk_iterator(new_stack);
+  iter_destroy(iter);
+  stk_destroy(new_stack);
+
+  for (i = 0; i < O1BATCHSIZE; i++) {
+    free(mints[i]);
+  }
 }
 
 int main(int argc, char **argv) {
