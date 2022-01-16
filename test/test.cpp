@@ -3,6 +3,7 @@
 extern "C" {
 #include "vec.h"
 #include "queue.h"
+#include "stack.h"
 }
 
 #define MAX_LEN 1024
@@ -128,6 +129,20 @@ TEST(QueueTests, QueueIterator) {
   }
   iter_destroy(iter);
   q_destroy(new_queue);
+}
+
+TEST(StackTests, InitStack) {
+  
+}
+
+TEST(StackTests, Push_Pop_Speed) {
+  Stack* new_stack = stack();
+  int i;
+  for (i = 0; i < 1000000; i++) {
+    stk_push(new_stack, &i);
+  }
+
+  Iterator* iter = stk_iterator(new_stack);
 }
 
 int main(int argc, char **argv) {

@@ -50,7 +50,7 @@ int q_size(Queue* queue) {
 /// while ((data = dequeue(my_queue)) != NULL) {
 ////    printf("%d", *data);
 /// }
-Iterator* q_iter(Queue* queue) {
+Iterator* q_iterator(Queue* queue) {
     return ll_iterator(queue->queue_list);
 }
 
