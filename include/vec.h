@@ -2,12 +2,11 @@
 #define VEC_H
 
 #include <stdio.h>
-#include "node.h"
 #include "iterator.h"
 
 typedef struct LinkedList LinkedList;
 
-LinkedList* linked_list();
+LinkedList* linkedlist();
 void ll_append(LinkedList* list, void* data_to_add);
 int ll_is_empty(LinkedList* list);
 void ll_destroy(LinkedList* list);
