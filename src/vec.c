@@ -1,13 +1,15 @@
 #include "vec.h"
 
+#include "node.h"
+
 struct LinkedList {
-    Node* head;
+    struct Node* head;
     int size;
-    Node* tail; 
+    struct Node* tail; 
 };
 
-Node* ll_node(void* new_data) {
-    Node* ret = (Node*) malloc(sizeof(Node));
+struct Node* ll_node(void* new_data) {
+    struct Node* ret = (struct Node*) malloc(sizeof(struct Node));
     ret->data = new_data;
     ret->next = NULL;
     return ret;
@@ -17,12 +19,12 @@ Node* ll_node(void* new_data) {
 /// Usage:
 /// Node* node_at_index = ll_get(my_list, 1); // Returns the second node in the list if it exists
 /// Returns Node* to node struct rep. index i.
-Node* get_node(LinkedList* list, int index) {
+struct Node* get_node(LinkedList* list, int index) {
     if (index >= list->size || index < 0) {
         return NULL;
     }
 
-    Node* ret = list->head;
+    struct Node* ret = list->head;
     int i = 0;
     while (ret != NULL && i < index) {
         ret = ret->next;
@@ -34,10 +36,10 @@ Node* get_node(LinkedList* list, int index) {
 
 /// Mallocs a new linked list struct and initializes fields.
 /// Usage:
-/// LinkedList* my_list = linked_list();
+/// LinkedList* my_list = linkedlist();
 /// 
 /// Returns pointer to dynamically allocated linked list
-LinkedList* linked_list() {
+LinkedList* linkedlist() {
     LinkedList* ret = (LinkedList*) malloc(sizeof(LinkedList));
     ret->size = 0;
     ret->head = NULL;
@@ -54,7 +56,7 @@ LinkedList* linked_list() {
 /// Returns void
 void ll_destroy(LinkedList* list) {
     while (list->head != NULL) {
-        Node* next = list->head->next;
+        struct Node* next = list->head->next;
         free(list->head);
         list->head = next;
     }
@@ -78,7 +80,7 @@ void ll_append(LinkedList* list, void* data_to_append) {
         list->tail = list->head;
         list->size = 1;
     } else {
-        Node* new_node = ll_node(data_to_append);
+        struct Node* new_node = ll_node(data_to_append);
         list->tail->next = new_node;
         list->tail = new_node;
         list->size++;
@@ -102,7 +104,7 @@ void ll_insert_at(LinkedList* list, int index, void* data_to_insert) {
     // include a LinkedList* list parameter because insertion of a node only requires
     // the proper swapping of references. This was changed to allow the list->size
     // parameter to remain updated.
-    Node* new_node = ll_node(data_to_insert);
+    struct Node* new_node = ll_node(data_to_insert);
     if (list->head == NULL) {
         list->head = new_node;
         list->tail = new_node;
@@ -110,8 +112,8 @@ void ll_insert_at(LinkedList* list, int index, void* data_to_insert) {
         return;
     }
 
-    Node* prev = get_node(list, index - 1);
-    Node* successor = get_node(list, index);
+    struct Node* prev = get_node(list, index - 1);
+    struct Node* successor = get_node(list, index);
     if (prev == NULL) {
         successor = list->head;
         list->head = new_node;
@@ -158,8 +160,8 @@ void* ll_remove(LinkedList* list, int index) {
         return NULL;
     }
 
-    Node* removed_node;
-    Node* prev = get_node(list, index - 1);
+    struct Node* removed_node;
+    struct Node* prev = get_node(list, index - 1);
     if (index == 0) {
         // Change head
         removed_node = list->head;

@@ -6,7 +6,7 @@ struct Stack {
 
 Stack* stack() {
     Stack* ret_stack = (Stack*) malloc(sizeof(Stack));
-    ret_stack->stack_list = linked_list();
+    ret_stack->stack_list = linkedlist();
     return ret_stack;
 }
 

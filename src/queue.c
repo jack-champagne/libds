@@ -10,7 +10,7 @@ struct Queue {
 /// Queue* my_queue = queue();
 Queue* queue() {
     Queue* ret_queue = (Queue*) malloc(sizeof(Queue));
-    ret_queue->queue_list = linked_list();
+    ret_queue->queue_list = linkedlist();
     return ret_queue;
 }
 

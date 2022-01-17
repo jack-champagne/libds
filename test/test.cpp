@@ -11,7 +11,7 @@ extern "C" {
 #define O1BATCHSIZE 100000
 
 TEST(LLTests, InitAsserts) {
-  LinkedList* new_list = linked_list();
+  LinkedList* new_list = linkedlist();
   EXPECT_NE(new_list, (void*) NULL)
       << "LinkedList returns null pointer";
   EXPECT_EQ(ll_size(new_list), 0)
@@ -26,7 +26,7 @@ TEST(LLTests, InitAsserts) {
 }
 
 TEST(LLTests, SizeChanges) {
-  LinkedList* new_list = linked_list();
+  LinkedList* new_list = linkedlist();
   EXPECT_EQ(ll_size(new_list), 0);
   int a = 40001;
   int b = 40010;
@@ -53,7 +53,7 @@ TEST(LLTests, SizeChanges) {
 
 TEST(LLTests, AppendRuntime) {
   int num = O1BATCHSIZE;
-  LinkedList* new_list = linked_list();
+  LinkedList* new_list = linkedlist();
   for (int i = 0; i < num; i++) {
     ll_append(new_list, &i);
   }
@@ -75,7 +75,7 @@ TEST(LLTests, PrependAppendOrdering) {
   my_strs[4] = (char*) malloc(sizeof(char) * 50);
   strcpy(my_strs[4], "This is the fifth piece of data.\n");
 
-  LinkedList* new_list = linked_list();
+  LinkedList* new_list = linkedlist();
   ll_prepend(new_list, my_strs[2]);
   ll_append(new_list, my_strs[3]);
   ll_prepend(new_list, my_strs[1]);
@@ -99,7 +99,7 @@ TEST(LLTests, PrependAppendOrdering) {
 }
 
 TEST(LLTests, AppendTime_VS) {
-  LinkedList* new_list = linked_list();
+  LinkedList* new_list = linkedlist();
   int* mints[O1BATCHSIZE];
   for (int i = 0; i < O1BATCHSIZE; i++) {
     mints[i] = (int*) malloc(sizeof(int));
@@ -117,7 +117,7 @@ TEST(LLTests, AppendTime_VS) {
 }
 
 TEST(LLTests, PrependTime_VS) {
-  LinkedList* new_list = linked_list();
+  LinkedList* new_list = linkedlist();
   int* mints[O1BATCHSIZE];
   for (int i = 0; i < O1BATCHSIZE; i++) {
     mints[i] = (int*) malloc(sizeof(int));
