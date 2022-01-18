@@ -1,7 +1,7 @@
 #ifndef VEC_H
 #define VEC_H
 
-#include <stdio.h>
+#include <stdio.h> //Consider removing as a dependency!!! TODO: RIGHT HERE
 #include "iterator.h"
 
 typedef struct LinkedList LinkedList;

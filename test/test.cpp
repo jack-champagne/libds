@@ -231,6 +231,7 @@ TEST(CDLinkedList, FirstTest) {
   EXPECT_EQ(cdll_remove(list, 0), my_strs[0]);
 
   cdll_destroy(list);
+  
   for (int i = 0; i < 5; i++) {
     free(my_strs[i]);
   }

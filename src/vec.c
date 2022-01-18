@@ -16,9 +16,9 @@ struct Node* ll_node(void* new_data) {
 }
 
 /// Get node at index. Not for outside use. For library use only.
-/// Usage:
-/// Node* node_at_index = ll_get(my_list, 1); // Returns the second node in the list if it exists
 /// Returns Node* to node struct rep. index i.
+/// Usage (NOT USED OUTSIDE LIBRARY):
+/// Node* node_at_index = get_node(my_list, 1); // Returns the second node in the list if it exists
 struct Node* get_node(LinkedList* list, int index) {
     if (index >= list->size || index < 0) {
         return NULL;
