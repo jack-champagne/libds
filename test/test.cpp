@@ -4,6 +4,7 @@ extern "C" {
 #include "vec.h"
 #include "queue.h"
 #include "stack.h"
+#include "cdvec.h"
 }
 
 #define MAX_LEN 1024
@@ -202,6 +203,36 @@ TEST(StackTests, Push_Pop_Speed) {
 
   for (i = 0; i < O1BATCHSIZE; i++) {
     free(mints[i]);
+  }
+}
+
+TEST(CDLinkedList, FirstTest) {
+  CDLinkedList* list = cdlinkedlist();
+
+  char* my_strs[5];
+
+  my_strs[0] = (char*) malloc(sizeof(char) * 50);
+  strcpy(my_strs[0], "This is the first piece of data.\n");
+  my_strs[1] = (char*) malloc(sizeof(char) * 50);
+  strcpy(my_strs[1], "This is the second piece of data.\n");
+  my_strs[2] = (char*) malloc(sizeof(char) * 50);
+  strcpy(my_strs[2], "This is the third piece of data.\n");
+  my_strs[3] = (char*) malloc(sizeof(char) * 50);
+  strcpy(my_strs[3], "This is the fourth piece of data.\n");
+  my_strs[4] = (char*) malloc(sizeof(char) * 50);
+  strcpy(my_strs[4], "This is the fifth piece of data.\n");
+
+  cdll_append(list, my_strs[1]);
+  cdll_prepend(list, my_strs[0]);
+  cdll_append(list, my_strs[3]);
+  cdll_insert_at(list, 2, my_strs[2]);
+  cdll_append(list, my_strs[4]);
+
+  EXPECT_EQ(cdll_remove(list, 0), my_strs[0]);
+
+  cdll_destroy(list);
+  for (int i = 0; i < 5; i++) {
+    free(my_strs[i]);
   }
 }
 
