@@ -135,6 +135,11 @@ TEST(LLTests, PrependTime_VS) {
   ll_destroy(new_list);
 }
 
+TEST(LLTests, DestroyEmpty) {
+  LinkedList* my_list = linkedlist();
+  ll_destroy(my_list);
+}
+
 TEST(QueueTests, InitQueue) {
   Queue* new_queue = queue();
   EXPECT_EQ(q_size(new_queue), 0);
@@ -167,6 +172,11 @@ TEST(QueueTests, QueueIterator) {
     EXPECT_EQ(*data, O1BATCHSIZE);
   }
   iter_destroy(iter);
+  q_destroy(new_queue);
+}
+
+TEST(QueueTests, DestroyEmpty) {
+  Queue* new_queue = queue();
   q_destroy(new_queue);
 }
 
@@ -206,7 +216,12 @@ TEST(StackTests, Push_Pop_Speed) {
   }
 }
 
-TEST(CDLinkedList, PtrStrTest) {
+TEST(StackTests, DestroyEmpty) {
+  Stack* stk = stack();
+  stk_destroy(stk);
+}
+
+TEST(CDLinkedListTests, PtrStrTest) {
   CDLinkedList* list = cdlinkedlist();
 
   char* my_strs[5];
@@ -237,7 +252,7 @@ TEST(CDLinkedList, PtrStrTest) {
   }
 }
 
-TEST(CDLinkedList, IntTest) {
+TEST(CDLinkedListTests, IntTest) {
   
   CDLinkedList* list = cdlinkedlist();
 
@@ -261,7 +276,7 @@ TEST(CDLinkedList, IntTest) {
   cdll_destroy(list);
 }
 
-TEST(CDLinkedList, RemoveTest) {
+TEST(CDLinkedListTests, RemoveTest) {
   
   CDLinkedList* list = cdlinkedlist();
 
@@ -301,9 +316,10 @@ TEST(CDLinkedList, RemoveTest) {
   cdll_destroy(list);
 }
 
-
-
-
+TEST(CDLinkedListTests, DestroyEmpty) {
+  CDLinkedList* list = cdlinkedlist();
+  cdll_destroy(list);
+}
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
