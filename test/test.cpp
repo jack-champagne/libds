@@ -206,7 +206,7 @@ TEST(StackTests, Push_Pop_Speed) {
   }
 }
 
-TEST(CDLinkedList, FirstTest) {
+TEST(CDLinkedList, PtrStrTest) {
   CDLinkedList* list = cdlinkedlist();
 
   char* my_strs[5];
@@ -236,6 +236,74 @@ TEST(CDLinkedList, FirstTest) {
     free(my_strs[i]);
   }
 }
+
+TEST(CDLinkedList, IntTest) {
+  
+  CDLinkedList* list = cdlinkedlist();
+
+  int a = 5;
+  int b = 6;
+  int c = 7;
+
+  cdll_append(list, &b);
+  cdll_prepend(list, &a);
+  cdll_append(list, &c);
+  cdll_append(list, &a);
+  cdll_append(list, &a);
+
+  EXPECT_EQ(*(int*)cdll_get(list, 0), 5);
+  EXPECT_EQ(*(int*)cdll_get(list, 1), 6);
+  EXPECT_EQ(*(int*)cdll_get(list, 2), 7);
+  a = 23;
+  EXPECT_EQ(*(int*)cdll_get(list, 3), a);
+  EXPECT_EQ(*(int*)cdll_get(list, 4), a);
+
+  cdll_destroy(list);
+}
+
+TEST(CDLinkedList, RemoveTest) {
+  
+  CDLinkedList* list = cdlinkedlist();
+
+  int a = 5;
+  int b = 6;
+  int c = 7;
+
+  cdll_append(list, &b);
+  cdll_prepend(list, &a);
+  cdll_append(list, &c);
+  cdll_append(list, &a);
+  cdll_append(list, &a);
+
+  EXPECT_EQ(*(int*)cdll_get(list, 0), 5);
+  EXPECT_EQ(*(int*)cdll_remove(list, 1), 6);
+  EXPECT_EQ(*(int*)cdll_remove(list, 1), 7);
+  a = 23;
+  EXPECT_EQ(*(int*)cdll_get(list, 1), a);
+  EXPECT_EQ(*(int*)cdll_get(list, 2), a);
+
+  // List: aaa
+
+  EXPECT_EQ(*(int*)cdll_remove(list, 0), 23); // aa
+  cdll_prepend(list, &c); // caa
+  cdll_append(list, &b); // caab
+  EXPECT_EQ(*(int*)cdll_remove(list, 0), c); // aab
+  EXPECT_EQ(*(int*)cdll_remove(list, cdll_size(list) - 1), b); // aa
+
+  cdll_prepend(list, &c); // caa
+  cdll_insert_at(list, cdll_size(list), &b); //caab
+  EXPECT_EQ(*(int*)cdll_remove(list, 1), a);
+  EXPECT_EQ(*(int*)cdll_remove(list, 2), b);
+  EXPECT_EQ(*(int*)cdll_remove(list, 1), a);
+  EXPECT_EQ(*(int*)cdll_remove(list, 0), c);
+  EXPECT_EQ(cdll_is_empty(list), 0);
+
+  cdll_destroy(list);
+}
+
+
+
+
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
