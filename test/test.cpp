@@ -296,7 +296,7 @@ TEST(CDLinkedList, RemoveTest) {
   EXPECT_EQ(*(int*)cdll_remove(list, 2), b);
   EXPECT_EQ(*(int*)cdll_remove(list, 1), a);
   EXPECT_EQ(*(int*)cdll_remove(list, 0), c);
-  EXPECT_EQ(cdll_is_empty(list), 0);
+  EXPECT_EQ(cdll_is_empty(list), 1);
 
   cdll_destroy(list);
 }
