@@ -54,13 +54,15 @@ CDLinkedList* cdlinkedlist() {
 ///
 /// Returns void
 void cdll_destroy(CDLinkedList* list) {
-    struct DLNode* cur = list->last->next; // HEAD
-    while (cur != list->last) {
-        struct DLNode* free_node = cur;
-        cur = cur->next;
-        free(free_node);
+    if (list->last != NULL) {
+        struct DLNode* cur = list->last->next; // HEAD
+        while (cur != list->last) {
+            struct DLNode* free_node = cur;
+            cur = cur->next;
+            free(free_node);
+        }
+        free(list->last);
     }
-    free(list->last);
     free(list);
 }
 
@@ -171,31 +173,20 @@ void* cdll_remove(CDLinkedList* list, int index) {
     }
 
     struct DLNode* removed_node = cdll_get_node(list, index);
-    struct DLNode* prev = removed_node->prev;
-    struct DLNode* next = removed_node->next;
+    struct DLNode* prev_node = removed_node->prev;
+    struct DLNode* next_node = removed_node->next;
     void* ret;
 
-
-    if (list->size == 1) {
-        list->last = NULL;
-        list->size--;
-        ret = removed_node->data;
-        free(removed_node);
-        return ret;
+    if (index == list->size - 1) {
+        if (list->last->prev == list->last) {
+            list->last = NULL;
+        } else {
+            list->last = list->last->prev;
+        }
     }
 
-    if (index == list->size) {
-        list->last = removed_node->prev;
-        list->last->next = removed_node->next;
-        list->last->next->prev = list->last;
-        list->size--;
-        ret = removed_node->data;
-        free(removed_node);
-        return ret;
-    } 
-
-    prev->next = next;
-    next->prev = prev;
+    prev_node->next = next_node;
+    next_node->prev = prev_node;
     list->size--;
  
     ret = removed_node->data;
