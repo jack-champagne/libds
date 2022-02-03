@@ -1,5 +1,5 @@
-_DEPS = vec.h node.h iterator.h queue.h stack.h heap.h cdvec.h dlnode.h
-_OBJ = vec.o iterator.o queue.o stack.o cdvec.o
+_DEPS = vec.h node.h iterator.h queue.h stack.h heap.h cdvec.h dlnode.h bst.h
+_OBJ = vec.o iterator.o queue.o stack.o cdvec.o bst.o
 _TOBJ = test.o
 
 LIBARCV = vec.so iterator.so

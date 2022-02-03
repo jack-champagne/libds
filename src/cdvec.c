@@ -112,6 +112,8 @@ void cdll_insert_at(CDLinkedList* list, int index, void* data_to_insert) {
         return;
     }
 
+    // TODO: Account for user being stupid and inserting at last index.
+    
     // Design choice: Originally, this implementation for insert_after did not
     // include a LinkedList* list parameter because insertion of a node only requires
     // the proper swapping of references. This was changed to allow the list->size
